@@ -5,10 +5,10 @@ require(data.table)
 
 
 load_data <- function(DTGame, name, sexe, age){
-  #name = "Alex DLSKQ"
-  #age = 21
-  #sexe = 1
-  
+  # name = "Antoine"
+  # age = 21
+  # sexe = 1
+  # 
   filename = paste(name, "_log.csv", sep="")
   DT <- as.data.table(read.csv(filename, header = TRUE,sep=";"))
   DT$step = as.numeric(DT$step)
@@ -89,8 +89,8 @@ DTGame <- data.table()
 
 DTGame <- load_data(DTGame,"Alex DLSKQ"     		 , 'M',21) 
 DTGame <- load_data(DTGame,"Alexandre"      		 , 'M',25) 
-DTGame <- load_data(DTGame,"Antoine"       		 , 'M',25) 
-DTGame <- load_data(DTGame,"AurÃ©lien"       		 , 'M',31) 
+#DTGame <- load_data(DTGame,"Antoine"       		 , 'M',25) 
+DTGame <- load_data(DTGame,"Aurélien"       		 , 'M',31) 
 DTGame <- load_data(DTGame,"Baptiste"       		 , 'M',21) 
 DTGame <- load_data(DTGame,"BB"             		 , 'M',21) 
 DTGame <- load_data(DTGame,"Clara Toussaint" 		 , 'F',20)  
@@ -103,7 +103,7 @@ DTGame <- load_data(DTGame,"Jean-Michel Chocobanane"   , 'M',22)
 DTGame <- load_data(DTGame,"Julia"          		 , 'F',24)
 DTGame <- load_data(DTGame,"kiki"          		 , 'M',34)
 DTGame <- load_data(DTGame,"Laurent"          		 , 'H',21)
-DTGame <- load_data(DTGame,"LÃ©o"          		 , 'H',21)
+DTGame <- load_data(DTGame,"Léo"          		 , 'H',21)
 DTGame <- load_data(DTGame,"Marion"          		 , 'F',23)
 DTGame <- load_data(DTGame,"Mathieu"        		 , 'M',26)
 DTGame <- load_data(DTGame,"Matthieu"        		 , 'M',22)
@@ -118,9 +118,9 @@ DTGame <- load_data(DTGame,"Rambar"        		 , 'F',24)
 DTGame <- load_data(DTGame,"RedSPINE"       		 , 'M',22)
 DTGame <- load_data(DTGame,"Samuel BUSSON"  		 , 'M',21) 
 DTGame <- load_data(DTGame,"Simon"        		 , 'M',22)
-DTGame <- load_data(DTGame,"ThÃ©a"        		 , 'F',22)
-DTGame <- load_data(DTGame,"ThÃ©o"        		 , 'M',20)
-DTGame <- load_data(DTGame,"ThÃ©ophile"      		 , 'M',22)  
+DTGame <- load_data(DTGame,"Théa"        		 , 'F',22)
+DTGame <- load_data(DTGame,"Theo"        		 , 'M',20)
+DTGame <- load_data(DTGame,"Théophile"      		 , 'M',22)  
 DTGame <- load_data(DTGame,"Thomas"      		 , 'M',24)  
 DTGame <- load_data(DTGame,"Tomskiev"      		 , 'M',29)  
 DTGame <- load_data(DTGame,"ToshNobody"      		 , 'M',26)  
