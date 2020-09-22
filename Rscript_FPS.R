@@ -18,14 +18,14 @@ load_data <- function(DTGame, name, sexe, age){
   DT <- DT[, sexe:=as.character(sexe)]
   DT$sexe = sexe
   DT$age = age
-
+  
   DT$TimeNorm = as.numeric(as.POSIXct(DT$Time)) - as.numeric(as.POSIXct(DT[1]$Time))
   
   DT$variation.Model = 0
   DT$step = as.numeric(1:nrow(DT))
-
   
-   
+  
+  
   variationTotale = 0
   for( i in 2:nrow(DT)){
     beta0i = DT[i]$beta0
@@ -36,17 +36,17 @@ load_data <- function(DTGame, name, sexe, age){
     diffVals = seq(0,1,0.05)
     for(j in 1:3){
       if(i > j){
-         beta0iprev = DT[i-j]$beta0
-         beta1iprev = DT[i-j]$beta1
-         for (x in diffVals)
-           delta = delta + (1/(1+exp(-(beta0i+beta1i*x))) - 1/(1+exp(-(beta0iprev+beta1iprev*x))))^2
-         nb = nb + 1
+        beta0iprev = DT[i-j]$beta0
+        beta1iprev = DT[i-j]$beta1
+        for (x in diffVals)
+          delta = delta + (1/(1+exp(-(beta0i+beta1i*x))) - 1/(1+exp(-(beta0iprev+beta1iprev*x))))^2
+        nb = nb + 1
       }
     }
     
     if(nb > 0)
       delta = delta / nb
-
+    
     DT[i]$variation.Model = sqrt(delta/length(diffVals))
     variationTotale = variationTotale + sqrt(delta/length(diffVals))
   }
@@ -54,15 +54,15 @@ load_data <- function(DTGame, name, sexe, age){
   DT$variation.Model.Total = variationTotale / (nrow(DT)-1)
   
   #temps en premier courbe
-  DT$TimeInFirstCond = nrow(DT)
-  for( i in 2:nrow(DT)){
-    if(DT[i]$curve != DT[i-1]$curve)
-    {
-      DT$TimeInFirstCond = i
-      break
-    }  
-    
-  }
+  # DT$TimeInFirstCond = nrow(DT)
+  # for( i in 2:nrow(DT)){
+  #   if(DT[i]$curve != DT[i-1]$curve)
+  #   {
+  #     DT$TimeInFirstCond = i
+  #     break
+  #   }  
+  #   
+  # }
   
   DT$IsInFirstCond = 1
   inFirstCond = 1;
@@ -100,19 +100,23 @@ DTGame <- load_data(DTGame,"Théophile"    , 'M',22)
 
 
 DTGameFirstCond = DTGame[IsInFirstCond == 1]
-DTGameFirstCondByPlayer = DTGameFirstCond[,.(TimeInFirstCond.Max = max(TimeInFirstCond), FirstCond = .SD[1]$FirstCond),by=idPlayer]
-DTGameFirstCondByPlayer[,.(timeMean=mean(TimeInFirstCond.Max),timeSd=sd(TimeInFirstCond.Max), nb=.N),by=FirstCond]
 
-res = wilcox.test(DTGameFirstCondByPlayer[FirstCond=="Pic"]$TimeInFirstCond.Max,
-            DTGameFirstCondByPlayer[FirstCond=="Flow"]$TimeInFirstCond.Max)
+DTGameFirstCondByPlayer = DTGameFirstCond[,.(TimeInFirstCond = max(TimeNorm), FirstCond = .SD[1]$FirstCond),by=idPlayer]
+
+#affiche
+DTGameFirstCondByPlayer 
+DTGameFirstCondByPlayer[,.(timeMean=mean(TimeInFirstCond),timeSd=sd(TimeInFirstCond), nb=.N),by=FirstCond]
+
+res = wilcox.test(DTGameFirstCondByPlayer[FirstCond=="Pic"]$TimeInFirstCond,
+                  DTGameFirstCondByPlayer[FirstCond=="Flow"]$TimeInFirstCond)
 print(paste("Pic/Flow",res$p.value))
 
-res = wilcox.test(DTGameFirstCondByPlayer[FirstCond=="Low"]$TimeInFirstCond.Max,
-            DTGameFirstCondByPlayer[FirstCond=="Flow"]$TimeInFirstCond.Max)
+res = wilcox.test(DTGameFirstCondByPlayer[FirstCond=="Low"]$TimeInFirstCond,
+                  DTGameFirstCondByPlayer[FirstCond=="Flow"]$TimeInFirstCond)
 print(paste("Low/Flow",res$p.value))
 
-res = wilcox.test(DTGameFirstCondByPlayer[FirstCond=="Pic"]$TimeInFirstCond.Max,
-            DTGameFirstCondByPlayer[FirstCond=="Low"]$TimeInFirstCond.Max)
+res = wilcox.test(DTGameFirstCondByPlayer[FirstCond=="Pic"]$TimeInFirstCond,
+                  DTGameFirstCondByPlayer[FirstCond=="Low"]$TimeInFirstCond)
 print(paste("Pic/Low",res$p.value))
 
 
