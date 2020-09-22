@@ -1,30 +1,31 @@
 #install.packages("data.table")
 
-
 require(data.table)
-
 
 load_data <- function(DTGame, name, sexe, age){
   # name = "Antoine"
   # age = 21
   # sexe = 1
   # 
+
   filename = paste(name, "_log.csv", sep="")
   DT <- as.data.table(read.csv(filename, header = TRUE,sep=";"))
+  
   DT$step = as.numeric(DT$step)
   DT = DT[order(step)]
+  
   DT$idPlayer = name
   DT$fail = 1-DT$win
+  
   DT <- DT[, sexe:=as.character(sexe)]
   DT$sexe = sexe
+  
   DT$age = age
   
   DT$TimeNorm = as.numeric(as.POSIXct(DT$Time)) - as.numeric(as.POSIXct(DT[1]$Time))
   
   DT$variation.Model = 0
   DT$step = as.numeric(1:nrow(DT))
-  
-  
   
   variationTotale = 0
   for( i in 2:nrow(DT)){
